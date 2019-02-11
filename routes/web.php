@@ -2,6 +2,8 @@
 
 use App\Jobs\SendEmailJob;
 use Carbon\Carbon;
+use App\Notifications\Newvisit;
+use App\Notifications\Newslack;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,3 +26,23 @@ Route::get('sendMail', function() {
 
     return 'Email sent properly';
 });
+
+Route::get('/newvisit', function () {
+ 
+    $user = App\User::first();
+     
+    $user->notify(new Newvisit("A new user has visited on your application."));
+     
+       return view('welcome');
+     
+});
+
+Route::get('/slack', function () {
+
+    $user = App\User::first();
+    
+    $user->notify(new Newslack());
+    
+    echo 'A slack notification has been send';
+    
+    });
